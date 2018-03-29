@@ -1,0 +1,3 @@
+StudentsControllerByField通过field来转换为Student
+
+StudentControllerBtMethod通过method调用set方法设置每个属性的值
