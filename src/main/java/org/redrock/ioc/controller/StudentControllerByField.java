@@ -1,30 +1,48 @@
 package org.redrock.ioc.controller;
 
+import org.redrock.ioc.annotation.Autowried;
 import org.redrock.ioc.annotation.Controller;
 import org.redrock.ioc.annotation.RequestMapping;
 import org.redrock.ioc.annotation.RequestMethod;
 import org.redrock.ioc.javabean.Student;
+import org.redrock.ioc.javabean.User;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.Field;
 @Controller
 public class StudentControllerByField {
+    @Autowried
     private Student student;
+
+    @Autowried
+    private User user;
+
+    public User getUser() {
+        return user;
+    }
+
 
     public Student getStudent() {
         return student;
     }
 
-    public void setStudent(Student student) {
-        this.student = student;
-    }
     // 通过field来设置属性的值
     @RequestMapping(value = "/dispatcher/studentByField",method = RequestMethod.POST)
-    public void getRequestToBean(HttpServletRequest request, HttpServletResponse response) throws IllegalAccessException {
-
-        student =new Student();
-        Class clazz=student.getClass();
+    public void getRequestToBean(HttpServletRequest request, HttpServletResponse response ) throws IllegalAccessException {
+        // 得到request传过来的type类型
+        String classType=request.getParameter("type");
+        Class<?> clazz = null;
+        Object object=null;
+        if (classType.equals("student")){
+            object=student;
+            clazz=student.getClass();
+        }else if (classType.equals("user")){
+            object=user;
+            clazz=user.getClass();
+        }else {
+            return;
+        }
         Field[] fields=clazz.getDeclaredFields();
         for (Field field:fields){
             if (!field.isAccessible()){
@@ -38,13 +56,14 @@ public class StudentControllerByField {
             String fieldType=field.getType().toString();
             // 如果是int类型
             if (fieldType.equals("int")){
-                field.setInt(student, Integer.parseInt(parameterValue));
+                field.setInt(object, Integer.parseInt(parameterValue));
 
             }else if (fieldType.equals("class java.lang.String")){// 如果是string类型
-                field.set(student,parameterValue);
+                field.set(object,parameterValue);
             }
         }
         System.out.println("name: "+student.getName()+" age: "+student.getAge());
+        System.out.println("userAge: "+user.getAge()+" userName: " +user.getName());
     }
 
 }

@@ -5,6 +5,7 @@ import org.redrock.ioc.annotation.Controller;
 import org.redrock.ioc.annotation.RequestMapping;
 import org.redrock.ioc.annotation.RequestMethod;
 import org.redrock.ioc.javabean.Student;
+import org.redrock.ioc.javabean.User;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -19,8 +20,19 @@ import java.util.List;
 
 @Controller
 public class StudentControllerByMethod {
-
+    @Autowried
     private Student student;
+
+    @Autowried
+    private User user;
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     public Student getStudent() {
         return student;
@@ -35,8 +47,22 @@ public class StudentControllerByMethod {
     @RequestMapping(value = "/dispatcher/studentByMethod",method = RequestMethod.POST )
     public void getRequestToBean(HttpServletRequest request, HttpServletResponse response) throws InvocationTargetException, IllegalAccessException {
 
-        student=new Student();
-        Class clazz=student.getClass();
+        /*student=new Student();
+        Class clazz=student.getClass();*/
+
+        // 得到request传过来的type类型
+        String classType=request.getParameter("type");
+        Class<?> clazz = null;
+        Object object=null;
+        if (classType.equals("student")){
+            object=student;
+            clazz=student.getClass();
+        }else if (classType.equals("user")){
+            object=user;
+            clazz=user.getClass();
+        }else {
+            return;
+        }
         Method[] methods=clazz.getDeclaredMethods();
         for (Method method:methods){
             // 得到method的名字
@@ -102,6 +128,7 @@ public class StudentControllerByMethod {
             }
         }*/
         System.out.println("age:"+student.getAge()+"name:"+student.getName());
+        System.out.println("userAge: "+user.getAge()+" userName: " +user.getName());
     }
 }
 

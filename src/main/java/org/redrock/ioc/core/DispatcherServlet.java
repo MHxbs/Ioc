@@ -38,9 +38,7 @@ public class DispatcherServlet extends GenericServlet {
         // 得到请求的方法和url,拼接成handleKey,从而得到Method
 
         String handleKey=request.getMethod()+":"+request.getRequestURI();
-        for (Map.Entry<String,Method> entry:handlers.entrySet()){
-            System.out.println(entry.getKey());
-        }
+        System.out.println(handleKey);
         Method handler=handlers.get(handleKey);
         // 通过handler得到他所属的类，从而得到controller
         Object controller=controllers.get(handler.getDeclaringClass());
