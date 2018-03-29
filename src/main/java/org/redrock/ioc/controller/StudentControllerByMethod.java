@@ -26,23 +26,6 @@ public class StudentControllerByMethod {
     @Autowried
     private User user;
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public Student getStudent() {
-        return student;
-    }
-
-    public void setStudent(Student student) {
-        this.student = student;
-    }
-
-
 
     @RequestMapping(value = "/dispatcher/studentByMethod",method = RequestMethod.POST )
     public void getRequestToBean(HttpServletRequest request, HttpServletResponse response) throws InvocationTargetException, IllegalAccessException {

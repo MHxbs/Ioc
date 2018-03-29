@@ -21,7 +21,7 @@ public class BeanFactory {
         this.classLoader=classLoader;
         initComponents();
         initControllerAndHandlers();
-       // initBeans();
+       initBeans();
     }
 
     public Map<Class<?>, Object> getBeans() {
@@ -53,7 +53,7 @@ public class BeanFactory {
             }
         }
     }
-  /*  private void initBeans(){
+    private void initBeans(){
         Set<Class<?>> beanSet=classLoader.getBeanSet();
         beans=new HashMap<Class<?>, Object>();
         for (Class<?> clazz:beanSet){
@@ -75,7 +75,7 @@ public class BeanFactory {
             }
 
         }
-    }*/
+    }
 
     private void initControllerAndHandlers(){
         // 得到包中的所有controller
