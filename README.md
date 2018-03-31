@@ -1,3 +1,3 @@
-StudentsControllerByField通过field来转换为Student
+StudentsControllerByField通过RequestUtil来返回一个对象，RequestUtil调用field来转换为Student
 
 StudentControllerBtMethod通过method调用set方法设置每个属性的值
