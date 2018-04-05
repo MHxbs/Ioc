@@ -32,6 +32,7 @@ public class StudentControllerByField {
     public void getRequestToBean(HttpServletRequest request, HttpServletResponse response ) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
         // 得到request传过来的type类型
         String classType=request.getParameter("type");
+        classType=classType.substring(0,1).toUpperCase()+classType.substring(1);
         classType="org.redrock.ioc.javabean."+classType;
         if (classType.equals("org.redrock.ioc.javabean.Student")){
             student= (Student) RequestUtil.getRequestToBean(request,Class.forName(classType));
@@ -69,7 +70,8 @@ public class StudentControllerByField {
                 field.set(object,parameterValue);
             }
         }*/
-        System.out.println("name: "+student.getName()+" age: "+student.getAge());
+
+        //System.out.println("name: "+student.getName()+" age: "+student.getAge());
         System.out.println("userAge: "+user.getAge()+" userName: " +user.getName());
     }
 

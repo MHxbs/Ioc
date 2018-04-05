@@ -145,6 +145,11 @@ public class ClassLoader {
             }
         }
     }
+
+    public Set<Class<?>> getClassSet() {
+        return classSet;
+    }
+
     // 通过classname返回已给类
     private Class<?> getClass(String className) {
         Class<?> clazz = null;

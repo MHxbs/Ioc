@@ -2,6 +2,8 @@ package org.redrock.ioc.core;
 
 
 
+import org.redrock.ioc.aop.AopLoader;
+
 import javax.servlet.GenericServlet;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
@@ -20,6 +22,7 @@ import java.util.Map;
 public class DispatcherServlet extends GenericServlet {
     private Map<Class<?>,Object> controllers;
     private Map<String,Method> handlers;
+    private Map<Class<?>,Object> proxyMap;
 
     // servlet初始化时就创建ClassLoader和BeanFactory
     // 从而进行包扫描
@@ -27,6 +30,8 @@ public class DispatcherServlet extends GenericServlet {
     public void init() throws ServletException {
         ClassLoader classLoader=new ClassLoader();
         BeanFactory beanFactory=new BeanFactory(classLoader);
+        AopLoader aopLoader=new AopLoader(classLoader);
+        proxyMap = aopLoader.getTargetProxyMap();
         controllers=beanFactory.getControllers();
         handlers=beanFactory.getHandlers();
     }
@@ -41,10 +46,13 @@ public class DispatcherServlet extends GenericServlet {
         System.out.println(handleKey);
         Method handler=handlers.get(handleKey);
         // 通过handler得到他所属的类，从而得到controller
-        Object controller=controllers.get(handler.getDeclaringClass());
+        //Object controller=controllers.get(handler.getDeclaringClass());
+        Class controller=handler.getDeclaringClass();
+        Object proxy = proxyMap.get(controller);
         if (controller!=null){
             try {
-                handler.invoke(controller,request,response);
+                handler.invoke(proxy,request,response);
+                //handler.invoke(controller,request,response);
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
             } catch (InvocationTargetException e) {
